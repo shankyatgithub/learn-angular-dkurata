@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { IProduct } from "./product";
+import { ProductService } from "./product.service";
 
 @Component({
     selector: 'shanks-products',
@@ -25,8 +26,9 @@ export class ProductListComponent implements OnInit{
     }
 
     filteredProducts: IProduct[] = [];
+    products: IProduct[] = [];
 
-    products: IProduct[] = [
+    /*products: IProduct[] = [
         {
             "productId": 1,
             "productName": "Leaf Rake",
@@ -47,10 +49,19 @@ export class ProductListComponent implements OnInit{
             "starRating": 4.2,
             "imageUrl": "assets/images/garden_cart.png"
           }
-    ];
+    ];*/
+
+    
+    /**
+     *
+     */
+    constructor(private productService: ProductService) {}
+
+
 
     ngOnInit(): void {
-        this.listFilter = 'cart';
+        this.products = this.productService.getProducts();
+        this.filteredProducts = this.products;
     }
 
     toogleImage(): void {
@@ -60,5 +71,9 @@ export class ProductListComponent implements OnInit{
     performFilter(filterBy: string) : IProduct[] {
         filterBy = filterBy.toLocaleLowerCase();
         return this.products.filter((product: IProduct) => product.productName.toLocaleLowerCase().includes(filterBy));
+    }
+
+    onRatingClicked(message: string):void{
+        this.pageTitle = message;
     }
 }
